@@ -1,8 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Onest:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+:root {
+    --primary: #4129f6;
+}
+
 * {
     font-family: 'Onest', sans-serif;
     box-sizing: border-box;
+}
+ 
+@keyframes opacity {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes transform {
+    from {
+        transform: translateY(-1rem);
+    }
+    to {
+        transform: translateY(0rem);
+    }
+}
+
+.animate {
+    animation: opacity 1s ease, transform 1s ease;
 }
 
 body {
@@ -31,6 +57,7 @@ header a {
     transition: 0.5s;
     color: white;
     text-decoration: none;
+    margin-left: 1.5rem;
 }
 header a:hover {
     transition: 0.3s;
@@ -39,19 +66,52 @@ header a:hover {
 
 header i{
     font-size: 1.2rem;
-    margin-right: 1rem;
+}
+
+header i.bi-list{
+    display: none;
 }
 
 header div{
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    text-align: center;
+    justify-content: center;
 }
 
-header div{
-    gap: 1.5rem;
+header div i{
+    align-self: center;
+    text-align: center;
+    justify-content: center;
+    justify-self: center;
+    cursor: pointer;
 }
 
-header img {
+
+header div img {
     width: 1.5rem;
     margin-right: 3rem;
+}
+
+header #logo {
+    width: 1.6rem;
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    header {
+        padding: 2rem 2rem 2rem 2rem;
+    }
+    header i.bi-list{
+        display: flex;
+    }
+    header a{
+        display: none;
+    }
+    header div img{
+        display: none;
+    }
+    header #logo {
+        display: flex;
+    }
 }

@@ -11,7 +11,6 @@ async function getMovie(url) {
         const anneeMatch = annee.match(/\((\d{4})\)/);
         const anneeOnly = anneeMatch ? anneeMatch[1] : null;
         const genreElement = doc.querySelectorAll('.categoryt')[2];
-        console.log(doc);
         const genre = genreElement ? genreElement.innerText.charAt(0).toUpperCase() + genreElement.innerText.slice(1).toLowerCase() : null;
         const video = doc.querySelector("iframe").src;
         if(doc.querySelectorAll('b')[15].innerText.split(')')[1].includes("HD")){
@@ -65,6 +64,17 @@ async function addToAffiche(page){
     });
 }
 
+async function getOMDB(title, year) {
+    try {
+        const response = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&y=${year}&apikey=41192fec`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Erreur lors de la requête :", error);
+        return null;
+    }
+}
+
 async function setActualFilm(){
     const hash = window.location.hash.substring(1); // Récupère le hash après le #
     film = await getMovie(`https://wodioz.com/538ga496mb/b/wodioz/${hash}`);
@@ -73,72 +83,115 @@ async function setActualFilm(){
     document.getElementById("synopsis").innerHTML = film.synopsis;
     document.getElementById("cover").setAttribute("src", film.cover);
     document.getElementById("background").setAttribute("src", film.cover);
+    getDominantColorFromImgElement(document.getElementById("cover"), (color) => {
+        document.getElementById("play").style.backgroundColor = color.hsl;
+    });
     if(!film.HD){
         document.getElementById("qualite").remove();
     }
-    document.getElementById("play").style.backgroundColor = `hsl(${await getDominantColor(film.cover)}deg, 50%, 60%)`;
-}
-
-async function getDominantColor(imageUrl) {
-    const img = document.createElement('img');
-    img.crossOrigin = 'Anonymous';
-    img.src = imageUrl;
-    await img.decode();
-
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    context.drawImage(img, 0, 0, img.width, img.height);
-
-    const imageData = context.getImageData(0, 0, img.width, img.height);
-    const data = imageData.data;
-    const colorCount = {};
-    let dominantColor = '';
-    let maxCount = 0;
-
-    for (let i = 0; i < data.length; i += 4) {
-        const rgb = `${data[i]},${data[i + 1]},${data[i + 2]}`;
-        colorCount[rgb] = (colorCount[rgb] || 0) + 1;
-        if (colorCount[rgb] > maxCount) {
-            maxCount = colorCount[rgb];
-            dominantColor = rgb;
+    omdinfos = await getOMDB(film.titre, film.annee);
+    if(omdinfos.Response == "True"){
+        console.log(omdinfos.imdbRating);
+        note = omdinfos.imdbRating;
+        const noteCinq = (parseFloat(note) / 2).toFixed(1);
+        const f = noteCinq.split('.').map(Number)[0];
+        demi = Math.round(noteCinq-f) == 1 ? true : false;
+        for(let i=0; i<f; i++){
+            document.querySelectorAll("#note i")[i].classList.remove("bi-star");
+            document.querySelectorAll("#note i")[i].classList.add("bi-star-fill");
         }
+        if(demi){
+            document.querySelectorAll("#note i")[f].classList.remove("bi-star");
+            document.querySelectorAll("#note i")[f].classList.add("bi-star-half");
+        }
+    }else{
+        document.getElementById("note").remove();
     }
-
-    const [r, g, b] = dominantColor.split(',').map(Number);
-    const hsv = rgbToHsv(r, g, b);
-    return hsv;
 }
 
-function rgbToHsv(r, g, b) {
-    r /= 255;
-    g /= 255;
-    b /= 255;
+function getDominantColorFromImgElement(imgElement, callback) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    const delta = max - min;
-
-    let h = 0;
-    let s = 0;
-    const v = max;
-
-    if (max !== 0) {
-        s = delta / max;
+    // On s'assure que l'image est bien chargée
+    if (imgElement.complete) {
+        processImage();
+    } else {
+        imgElement.onload = processImage;
     }
 
-    if (delta !== 0) {
-        if (max === r) {
-            h = (g - b) / delta + (g < b ? 6 : 0);
-        } else if (max === g) {
-            h = (b - r) / delta + 2;
+    function processImage() {
+        canvas.width = imgElement.naturalWidth;
+        canvas.height = imgElement.naturalHeight;
+
+        // Dessine l'image sur le canvas
+        ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+
+        // Récupère les données des pixels de l'image
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        const colorCounts = {};
+        let maxCount = 0;
+        let dominantRGB = "";
+
+        // Analyse des pixels (échantillonnage tous les 10 pixels pour optimiser)
+        for (let i = 0; i < imageData.length; i += 4 * 10) {
+            const r = imageData[i];
+            const g = imageData[i + 1];
+            const b = imageData[i + 2];
+
+            const rgb = `${r},${g},${b}`;
+
+            colorCounts[rgb] = (colorCounts[rgb] || 0) + 1;
+
+            if (colorCounts[rgb] > maxCount) {
+                maxCount = colorCounts[rgb];
+                dominantRGB = rgb;
+            }
+        }
+
+        // Convertir RGB en HSL
+        const rgbValues = dominantRGB.split(',').map(Number);
+        const hsl = rgbToHsl(rgbValues[0], rgbValues[1], rgbValues[2]);
+
+        callback({
+            hsl: `hsl(${hsl.h}, 80%, 50%)`
+        });
+    }
+
+    // Fonction pour convertir RGB en HSL
+    function rgbToHsl(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+            h = s = 0; // achromatic
         } else {
-            h = (r - g) / delta + 4;
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r:
+                    h = (g - b) / d + (g < b ? 6 : 0);
+                    break;
+                case g:
+                    h = (b - r) / d + 2;
+                    break;
+                case b:
+                    h = (r - g) / d + 4;
+                    break;
+            }
+            h /= 6;
         }
-        h /= 6;
+
+        return {
+            h: Math.round(h * 360),
+            s: Math.round(s * 100),
+            l: Math.round(l * 100)
+        };
     }
-
-    return Math.round(h * 360);
 }
-

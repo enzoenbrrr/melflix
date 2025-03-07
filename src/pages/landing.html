@@ -13,12 +13,14 @@
     <header>
         <div>
             <img src="../assets/icons/mx-creations.svg" alt="logo">
+            <i class="bi bi-list" style="font-size: 2.2em;"></i>
             <div>
                 <a href="">A l'affiche</a>
                 <a href="">Derniers ajouts</a>
                 <a href="">Catégories</a>
             </div>
         </div>
+        <img id="logo" src="../assets/icons/mx-creations.svg" alt="logo">
         <div>
             <i class="bi bi-search"></i>
             <a href="">Ma liste</a>
@@ -26,20 +28,22 @@
     </header>
 
     <div id="trailer">
-        <video autoplay muted loop>
+        <video autoplay muted loop playsinline class="background-video">
             <source src="../assets/videos/trailer.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas la balise vidéo.
         </video>
+        
         <div id="trailer-content">
-                <h1 id="titre">Le naufragé</h1>
+                <h1 id="titre">Abigail</h1>
                 <div id="infos">
-                    <span id="annee">2024</span> • <span id="genre">Action</></span>
+                    <span id="annee">2024</span> • <span id="genre">Horreur</></span>
                 </div>
                 <div id="badges">
                     <span id="langage">VF</span>
                     <span id="qualite">HD</span>
                 </div>
                 <div id="control">
-                    <button id="play">Lecture           <i class="bi bi-play-fill"></i></button>
+                    <button id="play">Lecture<i class="bi bi-play-fill"></i></button>
                     <button id="add-list">Ajouter a ma liste <i class="bi bi-plus"></i></button>
                 </div>
         </div>
