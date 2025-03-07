@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/base.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/film.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <title>Mx Cinema</title>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="../assets/icons/mx-creations.svg" alt="logo">
+            <div>
+                <a href="landing.html">A l'affiche</a>
+                <a href="">Derniers ajouts</a>
+                <a href="">Catégories</a>
+            </div>
+        </div>
+        <div>
+            <i class="bi bi-search"></i>
+            <a href="">Ma liste</a>
+        </div>
+    </header>
+
+    <div id="film">
+        <img id="background">
+        <div id="main-content">
+            <img id="cover" >
+            <div id="infos">
+                <h1 id="titre"></h1>
+                <span id="sous-titre"></span>
+                <div id="note">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                    <i class="bi bi-star"></i>
+                </div>
+                <span id="synopsis">
+                </span>
+                <div id="badges">
+                    <span id="langage">VF</span>
+                    <span id="qualite">HD</span>
+                </div>
+                <div id="actions">
+                    <button id="play">Lancer <i class="bi bi-play-fill"></i></button>
+                    <button id="add-list">Ajouter à ma liste <i class="bi bi-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/getMovie.js"></script>
+    <script>
+        setActualFilm();
+    </script>
+</body>
+</html>

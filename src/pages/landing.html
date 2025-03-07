@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/base.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/landing.css">
+    <link rel="stylesheet" type="text/css" href="../assets/styles/affiche.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <title>Mx Cinema</title>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="../assets/icons/mx-creations.svg" alt="logo">
+            <div>
+                <a href="">A l'affiche</a>
+                <a href="">Derniers ajouts</a>
+                <a href="">Catégories</a>
+            </div>
+        </div>
+        <div>
+            <i class="bi bi-search"></i>
+            <a href="">Ma liste</a>
+        </div>
+    </header>
+
+    <div id="trailer">
+        <video autoplay muted loop>
+            <source src="../assets/videos/trailer.mp4" type="video/mp4">
+        </video>
+        <div id="trailer-content">
+                <h1 id="titre">Le naufragé</h1>
+                <div id="infos">
+                    <span id="annee">2024</span> • <span id="genre">Action</></span>
+                </div>
+                <div id="badges">
+                    <span id="langage">VF</span>
+                    <span id="qualite">HD</span>
+                </div>
+                <div id="control">
+                    <button id="play">Lecture           <i class="bi bi-play-fill"></i></button>
+                    <button id="add-list">Ajouter a ma liste <i class="bi bi-plus"></i></button>
+                </div>
+        </div>
+    </div>
+
+    <h1 id="titre-section">A l'affiche</h1>
+    <div id="films">
+        
+    </div>
+
+    <script src="../scripts/working.js"></script>
+    <script src="../scripts/getMovie.js"></script>
+    <script>
+        addToAffiche(0);
+    </script>
+</body>
+</html>
