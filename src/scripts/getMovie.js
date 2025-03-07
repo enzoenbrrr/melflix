@@ -82,10 +82,6 @@ async function setActualFilm(){
     document.getElementById("sous-titre").innerHTML = film.annee+" • "+film.genre;
     document.getElementById("synopsis").innerHTML = film.synopsis;
     document.getElementById("cover").setAttribute("src", film.cover);
-    document.getElementById("background").setAttribute("src", film.cover);
-    getDominantColorFromImgElement(document.getElementById("cover"), (color) => {
-        document.getElementById("play").style.backgroundColor = color.hsl;
-    });
     if(!film.HD){
         document.getElementById("qualite").remove();
     }
@@ -106,92 +102,5 @@ async function setActualFilm(){
         }
     }else{
         document.getElementById("note").remove();
-    }
-}
-
-function getDominantColorFromImgElement(imgElement, callback) {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // On s'assure que l'image est bien chargée
-    if (imgElement.complete) {
-        processImage();
-    } else {
-        imgElement.onload = processImage;
-    }
-
-    function processImage() {
-        canvas.width = imgElement.naturalWidth;
-        canvas.height = imgElement.naturalHeight;
-
-        // Dessine l'image sur le canvas
-        ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
-
-        // Récupère les données des pixels de l'image
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-        const colorCounts = {};
-        let maxCount = 0;
-        let dominantRGB = "";
-
-        // Analyse des pixels (échantillonnage tous les 10 pixels pour optimiser)
-        for (let i = 0; i < imageData.length; i += 4 * 10) {
-            const r = imageData[i];
-            const g = imageData[i + 1];
-            const b = imageData[i + 2];
-
-            const rgb = `${r},${g},${b}`;
-
-            colorCounts[rgb] = (colorCounts[rgb] || 0) + 1;
-
-            if (colorCounts[rgb] > maxCount) {
-                maxCount = colorCounts[rgb];
-                dominantRGB = rgb;
-            }
-        }
-
-        // Convertir RGB en HSL
-        const rgbValues = dominantRGB.split(',').map(Number);
-        const hsl = rgbToHsl(rgbValues[0], rgbValues[1], rgbValues[2]);
-
-        callback({
-            hsl: `hsl(${hsl.h}, 80%, 50%)`
-        });
-    }
-
-    // Fonction pour convertir RGB en HSL
-    function rgbToHsl(r, g, b) {
-        r /= 255;
-        g /= 255;
-        b /= 255;
-
-        const max = Math.max(r, g, b);
-        const min = Math.min(r, g, b);
-        let h, s, l = (max + min) / 2;
-
-        if (max === min) {
-            h = s = 0; // achromatic
-        } else {
-            const d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            switch (max) {
-                case r:
-                    h = (g - b) / d + (g < b ? 6 : 0);
-                    break;
-                case g:
-                    h = (b - r) / d + 2;
-                    break;
-                case b:
-                    h = (r - g) / d + 4;
-                    break;
-            }
-            h /= 6;
-        }
-
-        return {
-            h: Math.round(h * 360),
-            s: Math.round(s * 100),
-            l: Math.round(l * 100)
-        };
     }
 }
