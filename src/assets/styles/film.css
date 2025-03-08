@@ -150,12 +150,12 @@
 #player-container {
     position: relative;
     width: 80%;  /* 80% de la largeur de la fenêtre */
-    padding-bottom: 45%;  /* Ratio 16:9 (9/16 * 100 = 56.25%), ajuster si nécessaire */
+    padding-bottom: 35%;  /* Ratio 16:9 (9/16 * 100 = 56.25%), ajuster si nécessaire */
     height: 0;
     max-width: 100%;
 }
 
-#player {
+#my-player {
     position: absolute;
     top: 0;
     left: 0;
