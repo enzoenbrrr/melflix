@@ -235,5 +235,8 @@
 
     #synopsis {
         order: 3;
-    }   
+    }
+    #cinema button{
+        left: 2rem;
+    }
 }
