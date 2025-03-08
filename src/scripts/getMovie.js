@@ -16,7 +16,6 @@ async function getMovie(url) {
         if(doc.querySelectorAll('b')[15].innerText.split(')')[1].includes("HD")){
             HD = true;
         }
-        console.log(video)
         return {
             titre: titre ? titre.textContent.replace(/\n/g, '') : null,
             annee: anneeOnly,
@@ -32,9 +31,13 @@ async function getMovie(url) {
     }
 }
 
-async function getAffiche(page) {
+async function getAffiche(page, id=false) {
     try {
-        const response = await fetch(`https://wodioz.com/538ga496mb/c/wodioz/29/${page}`, {method: 'GET'});
+        if(id){
+            response = await fetch(`https://wodioz.com/538ga496mb/c/wodioz/${id}/${page}`, {method: 'GET'});
+        }else{
+            response = await fetch(`https://wodioz.com/538ga496mb/c/wodioz/29/${page}`, {method: 'GET'});
+        }
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -45,8 +48,12 @@ async function getAffiche(page) {
     }
 }
 
-async function addToAffiche(page){
-    films = await getAffiche(page);
+async function addToAffiche(page, cate=false,animate=false) {
+    if(cate){
+        films = await getAffiche(page, cate);
+    }else{
+        films = await getAffiche(page, false)
+    }
     films.forEach(async film => {
         filmInfos = await getMovie(`https://wodioz.com${film.pathname}`);
         cover = filmInfos.cover;
@@ -62,6 +69,9 @@ async function addToAffiche(page){
         div.appendChild(img);
         div.appendChild(label);
         document.getElementById("films").appendChild(div);
+        if(animate){
+            animationList([div]);
+        }
     });
 }
 
@@ -88,7 +98,7 @@ async function setActualFilm(){
         document.getElementById("qualite").remove();
     }
     omdinfos = await getOMDB(film.titre, film.annee);
-    if(omdinfos.Response == "True"){
+    if(omdinfos.Response == "True" && omdinfos.imdbRating != "N/A"){
         note = omdinfos.imdbRating;
         const noteCinq = (parseFloat(note) / 2).toFixed(1);
         const f = noteCinq.split('.').map(Number)[0];
@@ -139,4 +149,23 @@ async function addToLast(){
         document.getElementById("films").appendChild(div);
         div.classList.add("animate");
     });
+}
+
+async function animationList(liste) {
+    for (let i = 0; i < liste.length; i++) {
+      liste[i].classList.toggle("animate");
+      liste[i].style.opacity = 1;
+      await new Promise(r => setTimeout(r, 100));
+    }
+  }
+  
+
+async function loadMore(which){
+    try {
+        await addToAffiche(which, true);
+        document.getElementById("load-more").setAttribute("onclick", `loadMore(${which+1})`);
+    } catch (err) {
+        document.getElementById("load-more").remove();
+        return null;
+    }
 }

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="src/assets/icons/mx-creations.svg">
     <link rel="stylesheet" type="text/css" href="src/assets/styles/base.css">
-    <link rel="stylesheet" type="text/css" href="src/assets/styles/categories.css">
+    <link rel="stylesheet" type="text/css" href="src/assets/styles/affiche.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-    <title>Melflix - Catégories</title>
+    <title>Melflix - Derniers ajouts</title>
 </head>
 <body>
     <header>
@@ -38,52 +38,19 @@
         </div>
     </div>
     <div id="background-blured"></div>
-    <h1 id="titre-section">Catégories</h1>
-    <div id="categories">
-        <button value="1">
-            <span>Action</span>
-        </button>
-        <button value="2">
-            <span>Animation</span>
-        </button>
-        <button value="3">
-            <span>Spectacles</span>
-        </button>
-        <button value="4">
-            <span>Aventure</span>
-        </button>
-        <button value="6">
-            <span>Comédie</span>
-        </button>
-        <button value="7">
-            <span>Drame</span>
-        </button>
-        <button value="8">
-            <span>Fantastique</span>
-        </button>
-        <button value="9">
-            <span>Horreur</span>
-        </button>
-        <button value="10">
-            <span>Policier</span>
-        </button>
-        <button value="11">
-            <span>Science-Fiction</span>
-        </button>
-        <button value="12">
-            <span>Thriller</span>
-        </button>
+    <h1 id="titre-section"></h1>
+    <div id="films">
+        
     </div>
+    <button id="load-more" onclick="loadMore(1)">Charger plus</button>
 
     <script src="src/scripts/working.js"></script>
     <script src="src/scripts/getMovie.js"></script>
     <script>
-        document.querySelectorAll("#categories button").forEach((btn) => {
-            btn.addEventListener("click", () => {
-                window.location.href = `bycategories.html#${btn.value}`;
-            });
-        });
-
+        const cat = ['Action', 'Animation', 'Spectacles', 'Aventure', '', 'Comédie', 'Drame', 'Fantastique', 'Horreur', 'Policier', 'Science-fiction', 'Thriller']
+        document.title = 'Melflix - ' + cat[Number(window.location.hash.substring(1))-1]
+        document.getElementById('titre-section').textContent = cat[Number(window.location.hash.substring(1))-1]
+        addToAffiche(0, Number(window.location.hash.substring(1)), true);
     </script>
 </body>
 </html>

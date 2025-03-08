@@ -39,3 +39,4 @@ function openMenu(){
   background.style.opacity = 1;
   menu.style.transform = "translateX(0%)";
 }
+
