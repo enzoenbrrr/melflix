@@ -17,7 +17,7 @@
             <i class="bi bi-list" style="font-size: 2.2em;"></i>
             <div>
                 <a href="index.html">A l'affiche</a>
-                <a href="">Derniers ajouts</a>
+                <a href="last.html">Derniers ajouts</a>
                 <a href="">Catégories</a>
             </div>
         </div>
@@ -59,6 +59,14 @@
     <script src="src/scripts/getMovie.js"></script>
     <script>
         addToAffiche(0);
+        let firstScroll = true;
+        window.addEventListener("scroll", async (event) => {
+        if (firstScroll) {
+            firstScroll = false;
+            await new Promise(r => setTimeout(r, 300));
+            await animationList(document.querySelectorAll('.film'));
+        };
+        });
     </script>
 </body>
 </html>

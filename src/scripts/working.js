@@ -23,12 +23,5 @@ document.addEventListener("wheel", async (event) => {
   }
 }, { passive: false });
 
-let firstScroll = true;
 
-window.addEventListener("scroll", async (event) => {
-  if (firstScroll) {
-    firstScroll = false;
-    await new Promise(r => setTimeout(r, 300));
-    await animationList(document.querySelectorAll('.film'));
-  };
-});
+

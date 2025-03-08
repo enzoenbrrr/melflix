@@ -103,3 +103,37 @@ async function setActualFilm(){
         document.getElementById("note").remove();
     }
 }
+
+
+async function getLast() {
+    try {
+        const response = await fetch(`https://wodioz.com/538ga496mb/home/wodioz`, {method: 'GET'});
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        return doc.querySelectorAll('#hann a');
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
+async function addToLast(){
+    films = await getLast();
+    await films.forEach(async film => {
+        filmInfos = await getMovie(`https://wodioz.com${film.pathname}`);
+        cover = filmInfos.cover;
+        
+        div = document.createElement("div");
+        div.classList.add("film");
+        img =document.createElement("img");
+        img.setAttribute("onclick", `window.location.href = 'film.html#${film.pathname.split("/")[4]}'`);
+        img.setAttribute("src", cover);
+        label = document.createElement("label");
+        label.innerHTML = film.textContent.split("(")[0] + "<br><p>" + film.textContent.split("(")[1].split(")")[0] + "</p>";
+        div.appendChild(img);
+        div.appendChild(label);
+        document.getElementById("films").appendChild(div);
+    });
+    animationList(document.querySelectorAll('.film'));
+}

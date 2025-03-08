@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="src/assets/icons/mx-creations.svg">
+    <link rel="stylesheet" type="text/css" href="src/assets/styles/base.css">
+    <link rel="stylesheet" type="text/css" href="src/assets/styles/affiche.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <title>Melflix</title>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="src/assets/icons/mx-creations.svg" alt="logo">
+            <i class="bi bi-list" style="font-size: 2.2em;"></i>
+            <div>
+                <a href="index.html">A l'affiche</a>
+                <a href="">Derniers ajouts</a>
+                <a href="">Catégories</a>
+            </div>
+        </div>
+        <img id="logo" src="src/assets/icons/mx-creations.svg" alt="logo">
+        <div>
+            <i class="bi bi-search"></i>
+            <a href="">Ma liste</a>
+        </div>
+    </header>
+
+    <h1 id="titre-section">Derniers ajouts</h1>
+    <div id="films">
+        
+    </div>
+
+    <script src="src/scripts/working.js"></script>
+    <script src="src/scripts/getMovie.js"></script>
+    <script>
+        addToLast();
+        
+    </script>
+</body>
+</html>
