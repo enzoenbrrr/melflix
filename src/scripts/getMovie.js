@@ -160,10 +160,14 @@ async function animationList(liste) {
   }
   
 
-async function loadMore(which){
+async function loadMore(which, cate=false){
     try {
-        await addToAffiche(which, true);
-        document.getElementById("load-more").setAttribute("onclick", `loadMore(${which+1})`);
+        if(cate){
+            await addToAffiche(which, cate, true);}
+        else{
+            await addToAffiche(which, false, true);
+        }
+        document.getElementById("load-more").setAttribute("onclick", `loadMore(${which+1}, ${cate})`);
     } catch (err) {
         document.getElementById("load-more").remove();
         return null;
