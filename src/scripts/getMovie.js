@@ -1,10 +1,6 @@
 async function getMovie(url) {
     try {
-        const response = await fetch(url, {method: 'GET',
-            headers: {
-                'Cookie': 'isokk=1'  // Ajouter le cookie manuellement à la requête
-            },
-            credentials: 'include'});
+        const response = await fetch(url, {method: 'GET'});
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -38,10 +34,7 @@ async function getMovie(url) {
 
 async function getAffiche(page) {
     try {
-        const response = await fetch(`https://wodioz.com/538ga496mb/c/wodioz/29/${page}`, {method: 'GET',
-            headers: {
-                'Cookie': 'isokk=1'  // Ajouter le cookie manuellement à la requête
-            }});
+        const response = await fetch(`https://wodioz.com/538ga496mb/c/wodioz/29/${page}`, {method: 'GET'});
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -90,7 +83,7 @@ async function setActualFilm(){
     document.getElementById("sous-titre").innerHTML = film.annee+" • "+film.genre;
     document.getElementById("synopsis").innerHTML = film.synopsis;
     document.getElementById("cover").setAttribute("src", film.cover);
-    document.getElementById("player").setAttribute("src", film.video);
+    document.getElementById("cinema").setAttribute("data-url", film.video);
     if(!film.HD){
         document.getElementById("qualite").remove();
     }
@@ -116,11 +109,7 @@ async function setActualFilm(){
 
 async function getLast() {
     try {
-        const response = await fetch(`https://wodioz.com/538ga496mb/home/wodioz`, {method: 'GET',
-            headers: {
-                'Cookie': 'isokk=1'  // Ajouter le cookie manuellement à la requête
-            },
-            credentials: 'include'});
+        const response = await fetch(`https://wodioz.com/538ga496mb/home/wodioz`, {method: 'GET'});
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
