@@ -135,5 +135,6 @@ async function addToLast(){
         div.appendChild(label);
         document.getElementById("films").appendChild(div);
     });
-    animationList(document.querySelectorAll('.film'));
+    await new Promise(r => setTimeout(r, 100));
+    animationList(document.querySelectorAll(".film"));
 }
