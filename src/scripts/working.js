@@ -22,3 +22,20 @@ function leaveMovie(){
   const iframe = document.getElementById('my-player');
   iframe.src = '';
 }
+
+async function closeMenu(){
+  const menu = document.getElementById('menu');
+  const background = document.getElementById('background-blured');
+  menu.style.transform = "translateX(-100%)";
+  background.style.opacity = 0;
+  await new Promise(r => setTimeout(r, 500));
+  background.style.zIndex = '-1';
+}
+
+function openMenu(){
+  const menu = document.getElementById('menu');
+  const background = document.getElementById('background-blured');
+  background.style.zIndex = '1001';
+  background.style.opacity = 1;
+  menu.style.transform = "translateX(0%)";
+}

@@ -27,3 +27,22 @@
     color: rgb(255, 255, 255);
     transform: translateX(0.5rem);
 }
+
+@media (max-width: 1024px) {
+    #categories {
+        width: max-content;
+        justify-content: center;
+        text-align: center;
+        margin: 4rem auto;
+    }
+    #categories button {
+        justify-content: center;
+        align-self: center;
+    }
+    #categories button:hover {
+        transition: 0.5s;
+        color: rgb(255, 255, 255);
+        transform: translateY(-0.2rem);
+    }
+    
+}
