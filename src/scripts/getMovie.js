@@ -126,6 +126,7 @@ async function addToLast(){
         
         div = document.createElement("div");
         div.classList.add("film");
+        div.classList.add("film-alive");
         img =document.createElement("img");
         img.setAttribute("onclick", `window.location.href = 'film.html#${film.pathname.split("/")[4]}'`);
         img.setAttribute("src", cover);
@@ -134,7 +135,6 @@ async function addToLast(){
         div.appendChild(img);
         div.appendChild(label);
         document.getElementById("films").appendChild(div);
+        div.classList.add("animate");
     });
-    await new Promise(r => setTimeout(r, 100));
-    animationList(document.querySelectorAll(".film"));
 }

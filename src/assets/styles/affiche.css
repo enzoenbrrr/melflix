@@ -43,6 +43,10 @@
     opacity: 0;
 }
 
+.film-alive{
+    opacity: 1;
+}
+
 .film label {
     color: white;
     font-size: 1.2rem;
