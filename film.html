@@ -46,14 +46,23 @@
                 <span id="synopsis">
                 </span>
                 <div id="actions">
-                    <button id="play">Lancer <i class="bi bi-play-fill"></i></button>
+                    <button onclick="startMovie()" id="play">Lancer <i class="bi bi-play-fill"></i></button>
                     <button id="add-list">Ajouter à ma liste <i class="bi bi-plus"></i></button>
                 </div>
             </div>
         </div>
     </div>
 
+    <div id="cinema">
+        <button onclick="leaveMovie()"><i class="bi bi-chevron-compact-left"></i>Quitter</button>
+        <div id="player-container">
+            <iframe id="player" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+
     <script src="src/scripts/getMovie.js"></script>
+    <script src="src/scripts/working.js"></script>
     <script defer>
         setActualFilm();
     </script>

@@ -19,7 +19,7 @@
     flex-direction: row;
     gap: 4rem;
     width: 80%;
-    padding-bottom: 4rem;
+    height: fit-content;
     text-shadow: 0 0 1rem black;
 }
 
@@ -109,12 +109,12 @@
 
 #actions #play {
     color: white;
-    background-color: #1d5af5;
+    background-color: var(--primary);
     text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.385);
 }
 
 #actions #play:hover {
-    background-color: #000000;
+    background-color: var(--primary-hover);
 }
 
 #actions #add-list {
@@ -131,6 +131,52 @@
 #actions i {
     font-size: 2rem;
 }
+
+#cinema {
+    transition: 1s;
+    z-index: 1001;
+    position: fixed;
+    top: -100vh;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6rem;
+}
+
+#player-container {
+    position: relative;
+    width: 80%;  /* 80% de la largeur de la fenêtre */
+    padding-bottom: 45%;  /* Ratio 16:9 (9/16 * 100 = 56.25%), ajuster si nécessaire */
+    height: 0;
+    max-width: 100%;
+}
+
+#player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#cinema button {
+    position: absolute;
+    top: 2rem;
+    left: 3rem;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+}
+
+
 
 @media (max-width: 1024px) {
     #film{

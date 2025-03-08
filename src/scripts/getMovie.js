@@ -1,6 +1,10 @@
 async function getMovie(url) {
     try {
-        const response = await fetch(url, {method: 'GET'});
+        const response = await fetch(url, {method: 'GET',
+            headers: {
+                'Cookie': 'isokk=1'  // Ajouter le cookie manuellement à la requête
+            },
+            credentials: 'include'});
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -16,7 +20,7 @@ async function getMovie(url) {
         if(doc.querySelectorAll('b')[15].innerText.split(')')[1].includes("HD")){
             HD = true;
         }
-
+        console.log(video)
         return {
             titre: titre ? titre.textContent.replace(/\n/g, '') : null,
             annee: anneeOnly,
@@ -34,7 +38,10 @@ async function getMovie(url) {
 
 async function getAffiche(page) {
     try {
-        const response = await fetch(`https://wodioz.com/538ga496mb/c/wodioz/29/${page}`, {method: 'GET'});
+        const response = await fetch(`https://wodioz.com/538ga496mb/c/wodioz/29/${page}`, {method: 'GET',
+            headers: {
+                'Cookie': 'isokk=1'  // Ajouter le cookie manuellement à la requête
+            }});
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -83,6 +90,7 @@ async function setActualFilm(){
     document.getElementById("sous-titre").innerHTML = film.annee+" • "+film.genre;
     document.getElementById("synopsis").innerHTML = film.synopsis;
     document.getElementById("cover").setAttribute("src", film.cover);
+    document.getElementById("player").setAttribute("src", film.video);
     if(!film.HD){
         document.getElementById("qualite").remove();
     }
@@ -108,7 +116,11 @@ async function setActualFilm(){
 
 async function getLast() {
     try {
-        const response = await fetch(`https://wodioz.com/538ga496mb/home/wodioz`, {method: 'GET'});
+        const response = await fetch(`https://wodioz.com/538ga496mb/home/wodioz`, {method: 'GET',
+            headers: {
+                'Cookie': 'isokk=1'  // Ajouter le cookie manuellement à la requête
+            },
+            credentials: 'include'});
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');

@@ -8,6 +8,15 @@ async function animationList(liste) {
 }
 
 
+async function startMovie(){
+  const iframe = document.getElementById('player');
+  const cinema = document.getElementById('cinema');
+  cinema.style.top = '0';
+  document.querySelector("#player > div.jw-wrapper.jw-reset > div.jw-controls.jw-reset > div.jw-controlbar.jw-reset > div > div.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-playback").click()
+}
 
-
-
+function leaveMovie(){
+  const cinema = document.getElementById('cinema');
+  cinema.style.top = '-100vh';
+  document.querySelector("#player > div.jw-wrapper.jw-reset > div.jw-controls.jw-reset > div.jw-controlbar.jw-reset > div > div.jw-icon.jw-icon-inline.jw-button-color.jw-reset.jw-icon-playback").click()
+}
