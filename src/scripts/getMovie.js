@@ -87,7 +87,6 @@ async function setActualFilm(){
     }
     omdinfos = await getOMDB(film.titre, film.annee);
     if(omdinfos.Response == "True"){
-        console.log(omdinfos.imdbRating);
         note = omdinfos.imdbRating;
         const noteCinq = (parseFloat(note) / 2).toFixed(1);
         const f = noteCinq.split('.').map(Number)[0];
