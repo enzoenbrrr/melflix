@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="src/assets/icons/mx-creations.svg">
+    <link rel="stylesheet" type="text/css" href="src/assets/styles/base.css">
+    <link rel="stylesheet" type="text/css" href="src/assets/styles/categories.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <title>Melflix - Catégories</title>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="src/assets/icons/mx-creations.svg" alt="logo">
+            <i class="bi bi-list" style="font-size: 2.2em;"></i>
+            <div>
+                <a href="index.html">A l'affiche</a>
+                <a href="last.html">Derniers ajouts</a>
+                <a href="categories.html">Catégories</a>
+            </div>
+        </div>
+        <img id="logo" src="src/assets/icons/mx-creations.svg" alt="logo">
+        <div>
+            <i class="bi bi-search"></i>
+            <a href="">Ma liste</a>
+        </div>
+    </header>
+
+    <h1 id="titre-section">Catégories</h1>
+    <div id="categories">
+        <button value="1">
+            <span>Action</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="2">
+            <span>Animation</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="3">
+            <span>Spectacles</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="4">
+            <span>Aventure</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="6">
+            <span>Comédie</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="7">
+            <span>Drame</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="8">
+            <span>Fantastique</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="9">
+            <span>Horreur</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="10">
+            <span>Policier</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="11">
+            <span>Science-Fiction</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+        <button value="12">
+            <span>Thriller</span><i class="bi bi-arrow-right-short"></i>
+        </button>
+    </div>
+
+    <script src="src/scripts/working.js"></script>
+    <script src="src/scripts/getMovie.js"></script>
+    <script>
+        addToLast();
+        
+    </script>
+</body>
+</html>

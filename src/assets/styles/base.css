@@ -98,6 +98,13 @@ header #logo {
     display: none;
 }
 
+#titre-section{
+    margin: 9rem 0 0 6rem;
+    padding: 0;
+    font-size: 2rem;
+    color: white;
+}
+
 @media (max-width: 1024px) {
     header {
         padding: 2rem 2rem 2rem 2rem;
@@ -113,5 +120,11 @@ header #logo {
     }
     header #logo {
         display: flex;
+    }
+    #titre-section{
+        margin: 9rem 0 0 2rem;
+        padding: 0;
+        font-size: 2rem;
+        color: white;
     }
 }

@@ -56,6 +56,7 @@ async function addToAffiche(page){
         img =document.createElement("img");
         img.setAttribute("onclick", `window.location.href = 'film.html#${film.pathname.split("/")[4]}'`);
         img.setAttribute("src", cover);
+        img.setAttribute("loading", "lazy");
         label = document.createElement("label");
         label.innerHTML = film.textContent.split("(")[0] + "<br><p>" + film.textContent.split("(")[1].split(")")[0] + "</p>";
         div.appendChild(img);
