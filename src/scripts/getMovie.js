@@ -41,6 +41,12 @@ async function getAffiche(page, id=false) {
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
+        const films = Array.from(doc.querySelectorAll('#hann a')).map(element => ({
+            pathname: element.pathname,
+            innerText: element.innerText
+        }));
+        const filmsJSON = JSON.stringify(films);
+        localStorage.setItem('films-'+id+'-'+page, filmsJSON);
         return doc.querySelectorAll('#hann a');
     } catch (err) {
         console.error(err);
@@ -49,30 +55,68 @@ async function getAffiche(page, id=false) {
 }
 
 async function addToAffiche(page, cate=false,animate=false) {
-    if(cate){
-        films = await getAffiche(page, cate);
+    now = Date.now();
+    j = 86400000 
+
+    if(now - Number(localStorage.getItem("lastLoad-"+cate+'-'+page))< j){
+        console.log("from cache");
+        const filmsJSON = localStorage.getItem('films-'+cate+'-'+page);
+        const films = JSON.parse(filmsJSON);
+        films.forEach(async film => {
+            if(localStorage.getItem("cover-"+film.pathname)){
+                cover = localStorage.getItem("cover-"+film.pathname);
+            }else{
+                filmInfos = await getMovie(`https://wodioz.com${film.pathname}`);
+                cover = filmInfos.cover;
+                localStorage.setItem("cover-"+film.pathname, cover);
+            }
+            
+            div = document.createElement("div");
+            div.classList.add("film");
+            img =document.createElement("img");
+            img.setAttribute("onclick", `window.location.href = 'film.html#${film.pathname.split("/")[4]}'`);
+            img.setAttribute("src", cover);
+            img.setAttribute("loading", "lazy");
+            label = document.createElement("label");
+            label.innerHTML = film.innerText.split("(")[0] + "<br><p>" + film.innerText.split("(")[1].split(")")[0] + "</p>";
+            div.appendChild(img);
+            div.appendChild(label);
+            document.getElementById("films").appendChild(div);
+            if(animate){
+                animationList([div]);
+            }
+        });
     }else{
-        films = await getAffiche(page, false)
+        console.log("from fetch");
+        localStorage.setItem("lastLoad-"+cate+'-'+page, now);
+        films = await getAffiche(page, cate);
+        films.forEach(async film => {
+            if(localStorage.getItem(film.pathname.split("/")[4])+"-cover"){
+                cover = localStorage.getItem(film.pathname.split("/")[4] + "-cover");
+            }else{
+                filmInfos = await getMovie(`https://wodioz.com${film.pathname}`);
+                cover = filmInfos.cover;
+                localStorage.setItem(film.pathname.split("/")[4] + "-cover", cover);
+            }
+            
+            div = document.createElement("div");
+            div.classList.add("film");
+            img =document.createElement("img");
+            img.setAttribute("onclick", `window.location.href = 'film.html#${film.pathname.split("/")[4]}'`);
+            img.setAttribute("src", cover);
+            img.setAttribute("loading", "lazy");
+            label = document.createElement("label");
+            label.innerHTML = film.textContent.split("(")[0] + "<br><p>" + film.textContent.split("(")[1].split(")")[0] + "</p>";
+            div.appendChild(img);
+            div.appendChild(label);
+            document.getElementById("films").appendChild(div);
+            if(animate){
+                animationList([div]);
+            }
+        });
     }
-    films.forEach(async film => {
-        filmInfos = await getMovie(`https://wodioz.com${film.pathname}`);
-        cover = filmInfos.cover;
-        
-        div = document.createElement("div");
-        div.classList.add("film");
-        img =document.createElement("img");
-        img.setAttribute("onclick", `window.location.href = 'film.html#${film.pathname.split("/")[4]}'`);
-        img.setAttribute("src", cover);
-        img.setAttribute("loading", "lazy");
-        label = document.createElement("label");
-        label.innerHTML = film.textContent.split("(")[0] + "<br><p>" + film.textContent.split("(")[1].split(")")[0] + "</p>";
-        div.appendChild(img);
-        div.appendChild(label);
-        document.getElementById("films").appendChild(div);
-        if(animate){
-            animationList([div]);
-        }
-    });
+    
+    
 }
 
 async function getOMDB(title, year) {
@@ -87,19 +131,27 @@ async function getOMDB(title, year) {
 }
 
 async function setActualFilm(){
-    const hash = window.location.hash.substring(1); // Récupère le hash après le #
-    film = await getMovie(`https://wodioz.com/538ga496mb/b/wodioz/${hash}`);
-    document.getElementById("titre").innerHTML = film.titre;
-    document.getElementById("sous-titre").innerHTML = film.annee+" • "+film.genre;
-    document.getElementById("synopsis").innerHTML = film.synopsis;
-    document.getElementById("cover").setAttribute("src", film.cover);
-    document.getElementById("cinema").setAttribute("data-url", film.video);
-    if(!film.HD){
-        document.getElementById("qualite").remove();
-    }
-    omdinfos = await getOMDB(film.titre, film.annee);
-    if(omdinfos.Response == "True" && omdinfos.imdbRating != "N/A"){
-        note = omdinfos.imdbRating;
+    const filmId = window.location.hash.substring(1);
+    film = await getMovie(`https://wodioz.com/538ga496mb/b/wodioz/${filmId}`);
+    if(localStorage.getItem(filmId+"-cover")){
+        console.log("from cache");
+        film_cover = localStorage.getItem(filmId+"-cover");
+        film_titre = localStorage.getItem(filmId+"-titre");
+        film_genre = localStorage.getItem(filmId+"-genre");
+        film_annee = localStorage.getItem(filmId+"-annee");
+        film_synopsis = localStorage.getItem(filmId+"-synopsis");
+        film_video = localStorage.getItem(filmId+"-video");
+        film_HD = localStorage.getItem(filmId+"-HD");
+
+        document.getElementById("titre").innerHTML = film_titre;
+        document.getElementById("sous-titre").innerHTML = film_annee+" • "+film_genre;
+        document.getElementById("synopsis").innerHTML = film_synopsis;
+        document.getElementById("cover").setAttribute("src", film_cover);
+        document.getElementById("cinema").setAttribute("data-url", film_video);
+        if(film_HD == 'false'){
+            document.getElementById("qualite").remove();
+        }
+        note = localStorage.getItem(filmId+"-note");
         const noteCinq = (parseFloat(note) / 2).toFixed(1);
         const f = noteCinq.split('.').map(Number)[0];
         demi = Math.round(noteCinq-f) == 1 ? true : false;
@@ -112,8 +164,46 @@ async function setActualFilm(){
             document.querySelectorAll("#note i")[f].classList.add("bi-star-half");
         }
     }else{
-        document.getElementById("note").remove();
+        console.log("from fetch");
+        film = await getMovie(`https://wodioz.com/538ga496mb/b/wodioz/${filmId}`);
+        document.getElementById("titre").innerHTML = film.titre;
+        document.getElementById("sous-titre").innerHTML = film.annee+" • "+film.genre;
+        document.getElementById("synopsis").innerHTML = film.synopsis;
+        document.getElementById("cover").setAttribute("src", film.cover);
+        document.getElementById("cinema").setAttribute("data-url", film.video);
+        localStorage.setItem(filmId+"-HD", 'true');
+        if(!film.HD){
+            document.getElementById("qualite").remove();
+            localStorage.setItem(filmId+"-HD", "false");
+        }
+        localStorage.setItem(filmId+"-cover", film.cover);
+        localStorage.setItem(filmId+"-titre", film.titre);
+        localStorage.setItem(filmId+"-genre", film.genre);
+        localStorage.setItem(filmId+"-annee", film.annee);
+        localStorage.setItem(filmId+"-synopsis", film.synopsis);
+        localStorage.setItem(filmId+"-video", film.video);
+        omdinfos = await getOMDB(film.titre, film.annee);
+        if(omdinfos.Response == "True" && omdinfos.imdbRating != "N/A"){
+            note = omdinfos.imdbRating;
+            const noteCinq = (parseFloat(note) / 2).toFixed(1);
+            const f = noteCinq.split('.').map(Number)[0];
+            demi = Math.round(noteCinq-f) == 1 ? true : false;
+            for(let i=0; i<f; i++){
+                document.querySelectorAll("#note i")[i].classList.remove("bi-star");
+                document.querySelectorAll("#note i")[i].classList.add("bi-star-fill");
+            }
+            if(demi){
+                document.querySelectorAll("#note i")[f].classList.remove("bi-star");
+                document.querySelectorAll("#note i")[f].classList.add("bi-star-half");
+            }
+        }else{
+            document.getElementById("note").remove();
+        }
+        localStorage.setItem(filmId+"-note", note);
     }
+
+
+    
 }
 
 
