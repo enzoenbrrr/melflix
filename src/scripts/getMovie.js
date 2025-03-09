@@ -134,7 +134,7 @@ async function getOMDB(title, year) {
 async function setActualFilm(){
     const filmId = window.location.hash.substring(1);
     film = await getMovie(`https://wodioz.com/538ga496mb/b/wodioz/${filmId}`);
-    if(localStorage.getItem(filmId+"-cover")){
+    if(localStorage.getItem(filmId+"-synopsis")){
         console.log("from cache");
         film_cover = localStorage.getItem(filmId+"-cover");
         film_titre = localStorage.getItem(filmId+"-titre");
@@ -153,16 +153,21 @@ async function setActualFilm(){
             document.getElementById("qualite").remove();
         }
         note = localStorage.getItem(filmId+"-note");
-        const noteCinq = (parseFloat(note) / 2).toFixed(1);
-        const f = noteCinq.split('.').map(Number)[0];
-        demi = Math.round(noteCinq-f) == 1 ? true : false;
-        for(let i=0; i<f; i++){
-            document.querySelectorAll("#note i")[i].classList.remove("bi-star");
-            document.querySelectorAll("#note i")[i].classList.add("bi-star-fill");
+        if(note != "N/A" && note != 'undefined'){
+            const noteCinq = (parseFloat(note) / 2).toFixed(1);
+            const f = noteCinq.split('.').map(Number)[0];
+            demi = Math.round(noteCinq-f) == 1 ? true : false;
+            for(let i=0; i<f; i++){
+                document.querySelectorAll("#note i")[i].classList.remove("bi-star");
+                document.querySelectorAll("#note i")[i].classList.add("bi-star-fill");
+            }
+            if(demi){
+                document.querySelectorAll("#note i")[f].classList.remove("bi-star");
+                document.querySelectorAll("#note i")[f].classList.add("bi-star-half");
+            }
         }
-        if(demi){
-            document.querySelectorAll("#note i")[f].classList.remove("bi-star");
-            document.querySelectorAll("#note i")[f].classList.add("bi-star-half");
+        else{
+            document.getElementById("note").remove();
         }
     }else{
         console.log("from fetch");
@@ -200,7 +205,8 @@ async function setActualFilm(){
         }else{
             document.getElementById("note").remove();
         }
-        localStorage.setItem(filmId+"-note", note);
+        localStorage.setItem(filmId+"-note", omdinfos.imdbRating);
+        console.log(omdinfos.imdbRating);
     }
 
 
