@@ -95,7 +95,6 @@ async function addToAffiche(page, cate=false,animate=false) {
                 cover = localStorage.getItem(film.pathname.split("/")[4]+"-cover");
             }else{
                 filmInfos = await getMovie(`https://wodioz.com${film.pathname}`);
-                console.log(filmInfos)
                 cover = filmInfos.cover;
                 localStorage.setItem(film.pathname.split("/")[4]+"-cover", cover);
             }
@@ -206,7 +205,6 @@ async function setActualFilm(){
             document.getElementById("note").remove();
         }
         localStorage.setItem(filmId+"-note", omdinfos.imdbRating);
-        console.log(omdinfos.imdbRating);
     }
 
 
