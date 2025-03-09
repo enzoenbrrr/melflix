@@ -91,12 +91,13 @@ async function addToAffiche(page, cate=false,animate=false) {
         localStorage.setItem("lastLoad-"+cate+'-'+page, now);
         films = await getAffiche(page, cate);
         films.forEach(async film => {
-            if(localStorage.getItem(film.pathname.split("/")[4])+"-cover"){
-                cover = localStorage.getItem(film.pathname.split("/")[4] + "-cover");
+            if(localStorage.getItem(film.pathname.split("/")[4]+"-cover")){
+                cover = localStorage.getItem(film.pathname.split("/")[4]+"-cover");
             }else{
                 filmInfos = await getMovie(`https://wodioz.com${film.pathname}`);
+                console.log(filmInfos)
                 cover = filmInfos.cover;
-                localStorage.setItem(film.pathname.split("/")[4] + "-cover", cover);
+                localStorage.setItem(film.pathname.split("/")[4]+"-cover", cover);
             }
             
             div = document.createElement("div");
